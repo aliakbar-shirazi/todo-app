@@ -44,7 +44,9 @@ const displayTodos = () => {
             <td>${todo.completed ? "Complated" : "Pending"}</td>
             <td>
                 <button onclick='editHandler(${todo.id})'>Edit</button>
-                <button>${todo.completed ? "Undo" : "Do"}</button>
+                <button onclick='toggleHandler(${todo.id})'>
+                  ${todo.completed ? "Undo" : "Do"}
+                </button>
                 <button>Delete</button>
             </td>
         </tr>
@@ -105,6 +107,14 @@ const applyEditHandler = (event) => {
   showAlert("Todo edited successfully", "success");
   taskInput.value = "";
   dateInput.value = "";
+};
+
+const toggleHandler = (id) => {
+  const todo = todos.find((todo) => +todo.id === +id);
+  todo.completed = !todo.completed;
+  saveToLocalStorage();
+  displayTodos();
+  showAlert("Todo status changed successfully", "success");
 };
 
 window.addEventListener("load", displayTodos);
