@@ -4,6 +4,7 @@ const addButton = document.getElementById("add-button");
 const alertMessage = document.getElementById("alert-message");
 const todosBody = document.querySelector("tbody");
 const deleteAllButton = document.getElementById("delet-all-button");
+const editButton = document.getElementById("edit-button");
 
 let todos = JSON.parse(localStorage.getItem("todos")) || [];
 console.log(todos);
@@ -42,7 +43,7 @@ const displayTodos = () => {
             <td>${todo.date || "no date"}</td>
             <td>${todo.completed ? "Complated" : "Pending"}</td>
             <td>
-                <button>Edit</button>
+                <button onclick='editHandler(${todo.id})'>Edit</button>
                 <button>${todo.completed ? "Undo" : "Do"}</button>
                 <button>Delete</button>
             </td>
@@ -83,6 +84,30 @@ const deleteAllHandler = () => {
   }
 };
 
+const editHandler = (id) => {
+  const todo = todos.find((todo) => +todo.id === +id);
+  taskInput.value = todo.task;
+  dateInput.value = todo.date;
+  addButton.style.display = "none";
+  editButton.style.display = "block";
+  editButton.dataset.id = id;
+};
+
+const applyEditHandler = (event) => {
+  const id = event.target.dataset.id;
+  const todo = todos.find((todo) => +todo.id === +id);
+  todo.task = taskInput.value;
+  todo.date = dateInput.value;
+  editButton.style.display = "none";
+  addButton.style.display = "block";
+  saveToLocalStorage();
+  displayTodos();
+  showAlert("Todo edited successfully", "success");
+  taskInput.value = "";
+  dateInput.value = "";
+};
+
 window.addEventListener("load", displayTodos);
 addButton.addEventListener("click", addHandler);
 deleteAllButton.addEventListener("click", deleteAllHandler);
+editButton.addEventListener("click", applyEditHandler);
