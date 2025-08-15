@@ -8,7 +8,6 @@ const editButton = document.getElementById("edit-button");
 const filterButtons = document.querySelectorAll(".filter-todos");
 
 let todos = JSON.parse(localStorage.getItem("todos")) || [];
-console.log(todos);
 
 const generateId = () => {
   return Math.round(Date.now() * Math.random() * Math.random()).toString();
