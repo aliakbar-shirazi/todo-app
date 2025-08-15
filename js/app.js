@@ -3,8 +3,9 @@ const dateInput = document.getElementById("date-input");
 const addButton = document.getElementById("add-button");
 const alertMessage = document.getElementById("alert-message");
 const todosBody = document.querySelector("tbody");
+const deleteAllButton = document.getElementById("delet-all-button");
 
-const todos = JSON.parse(localStorage.getItem("todos")) || [];
+let todos = JSON.parse(localStorage.getItem("todos")) || [];
 console.log(todos);
 
 const generateId = () => {
@@ -71,5 +72,17 @@ const addHandler = () => {
   }
 };
 
+const deleteAllHandler = () => {
+  if (!todos.length) {
+    showAlert("No todos to clear", "error");
+  } else {
+    todos = [];
+    saveToLocalStorage();
+    displayTodos();
+    showAlert("All todos cleard successfully", "success");
+  }
+};
+
 window.addEventListener("load", displayTodos);
 addButton.addEventListener("click", addHandler);
+deleteAllButton.addEventListener("click", deleteAllHandler);
