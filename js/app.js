@@ -98,15 +98,20 @@ const editHandler = (id) => {
 const applyEditHandler = (event) => {
   const id = event.target.dataset.id;
   const todo = todos.find((todo) => +todo.id === +id);
-  todo.task = taskInput.value;
-  todo.date = dateInput.value;
-  editButton.style.display = "none";
-  addButton.style.display = "block";
-  saveToLocalStorage();
-  displayTodos();
-  showAlert("Todo edited successfully", "success");
-  taskInput.value = "";
-  dateInput.value = "";
+  const task = taskInput.value.trim();
+  if (!task) {
+    showAlert("Please enter a todo!", "error");
+  } else {
+    todo.task = taskInput.value;
+    todo.date = dateInput.value;
+    editButton.style.display = "none";
+    addButton.style.display = "block";
+    saveToLocalStorage();
+    displayTodos();
+    showAlert("Todo edited successfully", "success");
+    taskInput.value = "";
+    dateInput.value = "";
+  }
 };
 
 const toggleHandler = (id) => {
