@@ -2,6 +2,7 @@ const taskInput = document.getElementById("task-input");
 const dateInput = document.getElementById("date-input");
 const addButton = document.getElementById("add-button");
 const alertMessage = document.getElementById("alert-message");
+const todosBody = document.querySelector("tbody");
 
 const todos = JSON.parse(localStorage.getItem("todos")) || [];
 console.log(todos);
@@ -27,6 +28,28 @@ const showAlert = (massage, type) => {
   }, 5000);
 };
 
+const displayTodos = () => {
+  todosBody.innerHTML = "";
+  if (!todos.length) {
+    todosBody.innerHTML = "<tr><th colspan='4'>No task found!</th></tr>";
+    return;
+  }
+  todos.forEach((todo) => {
+    todosBody.innerHTML += `
+        <tr>
+            <td>${todo.task}</td>
+            <td>${todo.date || "no date"}</td>
+            <td>${todo.completed ? "Complated" : "Pending"}</td>
+            <td>
+                <button>Edit</button>
+                <button>${todo.completed ? "Undo" : "Do"}</button>
+                <button>Delete</button>
+            </td>
+        </tr>
+    `;
+  });
+};
+
 const addHandler = () => {
   const task = taskInput.value.trim();
   const date = dateInput.value;
@@ -39,6 +62,7 @@ const addHandler = () => {
   if (task) {
     todos.push(todo);
     saveToLocalStorage();
+    displayTodos();
     taskInput.value = "";
     dateInput.value = "";
     showAlert("Todo added successfully", "success");
@@ -47,4 +71,5 @@ const addHandler = () => {
   }
 };
 
+window.addEventListener("load", displayTodos);
 addButton.addEventListener("click", addHandler);
