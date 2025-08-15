@@ -47,7 +47,7 @@ const displayTodos = () => {
                 <button onclick='toggleHandler(${todo.id})'>
                   ${todo.completed ? "Undo" : "Do"}
                 </button>
-                <button>Delete</button>
+                <button onclick='deleteHandler(${todo.id})'>Delete</button>
             </td>
         </tr>
     `;
@@ -120,6 +120,14 @@ const toggleHandler = (id) => {
   saveToLocalStorage();
   displayTodos();
   showAlert("Todo status changed successfully", "success");
+};
+
+const deleteHandler = (id) => {
+  const newTodos = todos.filter((todo) => +todo.id !== +id);
+  todos = newTodos;
+  saveToLocalStorage();
+  displayTodos();
+  showAlert("Todo delete successfully", "success");
 };
 
 window.addEventListener("load", displayTodos);
